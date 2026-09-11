@@ -16,6 +16,10 @@ DATASET_URL = (
     "https://github.com/TUMFTM/european-bike-sharing-dataset/"
     "raw/refs/heads/main/full/dataset.zip"
 )
+SAMPLE_BASE_URL = (
+    "https://raw.githubusercontent.com/TUMFTM/"
+    "european-bike-sharing-dataset/main/sample"
+)
 ARCHIVE_PATH = RAW_DIR / "dataset.zip"
 SOURCE_TABLES = ("trips.csv", "cities.csv", "stations.csv", "bikes.csv", "bike_types.csv")
 
@@ -62,4 +66,3 @@ def ensure_directories() -> None:
 
     for path in (RAW_DIR, FULL_RAW_DIR, INTERIM_DIR, PROCESSED_DIR, FIGURES_DIR):
         path.mkdir(parents=True, exist_ok=True)
-

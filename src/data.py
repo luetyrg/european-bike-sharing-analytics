@@ -26,6 +26,8 @@ from src.config import (
     MIN_VALID_DURATION_SHARE,
     PREFERRED_CITIES,
     PROCESSED_DIR,
+    SAMPLE_BASE_URL,
+    SAMPLE_RAW_DIR,
     SOURCE_TABLES,
     ensure_directories,
 )
@@ -82,6 +84,20 @@ def download_archive(destination: Path = ARCHIVE_PATH) -> Path:
         shutil.copyfileobj(response, output, length=8 * 1024 * 1024)
     partial.replace(destination)
     return destination
+
+
+def download_sample_tables() -> Path:
+    """Fetch the small official CSV excerpts used by the development check."""
+
+    ensure_directories()
+    SAMPLE_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    sample_tables = SOURCE_TABLES + ("station_status.csv", "city_areas.csv")
+    for table in sample_tables:
+        destination = SAMPLE_RAW_DIR / table
+        if destination.exists() and destination.stat().st_size > 0:
+            continue
+        urllib.request.urlretrieve(f"{SAMPLE_BASE_URL}/{table}", destination)
+    return SAMPLE_RAW_DIR
 
 
 def extract_source_tables(archive: Path = ARCHIVE_PATH) -> Path:

@@ -13,10 +13,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.config import FULL_RAW_DIR, SAMPLE_RAW_DIR, ensure_directories  # noqa: E402
+from src.config import (  # noqa: E402
+    FULL_RAW_DIR,
+    SAMPLE_RAW_DIR,
+    SOURCE_TABLES,
+    ensure_directories,
+)
 from src.data import (  # noqa: E402
     build_city_map,
     download_archive,
+    download_sample_tables,
     extract_source_tables,
     materialize_candidate_trips,
     prepare_selected_trips,
@@ -30,6 +36,7 @@ from src.data import (  # noqa: E402
 def sample_smoke_test() -> None:
     """Validate schema and one representative relational join on sample files."""
 
+    download_sample_tables()
     validate_source_schema(SAMPLE_RAW_DIR)
     trips = pd.read_csv(SAMPLE_RAW_DIR / "trips.csv")
     cities = pd.read_csv(SAMPLE_RAW_DIR / "cities.csv")
@@ -76,7 +83,7 @@ def main() -> None:
         sample_smoke_test()
         return
 
-    if not all((FULL_RAW_DIR / name).exists() for name in ("trips.csv", "cities.csv")):
+    if not all((FULL_RAW_DIR / name).exists() for name in SOURCE_TABLES):
         if args.skip_download:
             raise FileNotFoundError("Full source files are absent and --skip-download was supplied")
         archive = download_archive()
