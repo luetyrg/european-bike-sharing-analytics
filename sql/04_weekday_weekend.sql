@@ -1,12 +1,14 @@
--- Purpose: contrast observed weekday and weekend demand using normalized rates.
+-- Purpose: compare each weekday and support weekday/weekend rollups.
 WITH grouped AS (
     SELECT
         city,
+        day_of_week,
+        day_name,
         CASE WHEN is_weekend THEN 'Weekend' ELSE 'Weekday' END AS day_type,
         COUNT(*) AS trips,
         COUNT(DISTINCT trip_date) AS active_days
     FROM trips
-    GROUP BY city, day_type
+    GROUP BY city, day_of_week, day_name, day_type
 ),
 totals AS (
     SELECT city, SUM(trips) AS city_trips
@@ -15,6 +17,8 @@ totals AS (
 )
 SELECT
     g.city,
+    g.day_of_week,
+    g.day_name,
     g.day_type,
     g.trips,
     g.active_days,
@@ -22,5 +26,4 @@ SELECT
     g.trips / NULLIF(t.city_trips, 0)::DOUBLE AS trip_share
 FROM grouped g
 JOIN totals t USING (city)
-ORDER BY g.city, g.day_type;
-
+ORDER BY g.city, g.day_of_week;

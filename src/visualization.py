@@ -58,7 +58,12 @@ def create_all_figures(results: dict[str, pd.DataFrame], output_dir: Path) -> li
     ax.legend(frameon=False, ncol=4, loc="upper center")
     paths.append(_save(fig, output_dir, "hourly_demand_profile.png"))
 
-    day_type = results["weekday_weekend"].copy()
+    day_type = (
+        results["weekday_weekend"]
+        .groupby(["city", "day_type"], as_index=False)
+        .agg({"trips": "sum", "active_days": "sum"})
+    )
+    day_type["trips_per_active_day"] = day_type["trips"] / day_type["active_days"]
     pivot = day_type.pivot(index="city", columns="day_type", values="trips_per_active_day")
     pivot = pivot.reindex(kpis["city"])
     fig, ax = plt.subplots(figsize=(8, 5.0))
