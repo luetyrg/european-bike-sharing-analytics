@@ -1,0 +1,17 @@
+{
+  "analytical_rows": 6839701,
+  "observation_start": "2022-08-26",
+  "observation_end": "2023-07-15",
+  "cities": 4,
+  "interim_parquet_bytes": 225975023,
+  "figures": [
+    "trips_per_active_day.png",
+    "hourly_demand_profile.png",
+    "weekday_weekend_demand.png",
+    "median_duration.png",
+    "median_distance.png",
+    "top_stations.png",
+    "fleet_utilization_proxy.png",
+    "bike_type_share.png"
+  ]
+}
