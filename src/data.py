@@ -1,5 +1,3 @@
-"""Download, profile, select, and prepare the analytical trip subset."""
-
 from __future__ import annotations
 
 import shutil
@@ -74,8 +72,6 @@ def _columns_sql(columns: dict[str, str]) -> str:
 
 
 def download_archive(destination: Path = ARCHIVE_PATH) -> Path:
-    """Download the official archive once, with a temporary partial file."""
-
     ensure_directories()
     if destination.exists() and destination.stat().st_size > 100_000_000:
         return destination
@@ -87,8 +83,6 @@ def download_archive(destination: Path = ARCHIVE_PATH) -> Path:
 
 
 def download_sample_tables() -> Path:
-    """Fetch the small official CSV excerpts used by the development check."""
-
     ensure_directories()
     SAMPLE_RAW_DIR.mkdir(parents=True, exist_ok=True)
     sample_tables = SOURCE_TABLES + ("station_status.csv", "city_areas.csv")
@@ -101,8 +95,6 @@ def download_sample_tables() -> Path:
 
 
 def extract_source_tables(archive: Path = ARCHIVE_PATH) -> Path:
-    """Extract only tables used by the project, excluding station snapshots."""
-
     ensure_directories()
     with zipfile.ZipFile(archive) as bundle:
         names = {Path(name).name: name for name in bundle.namelist()}
@@ -118,8 +110,6 @@ def extract_source_tables(archive: Path = ARCHIVE_PATH) -> Path:
 
 
 def validate_source_schema(source_dir: Path) -> None:
-    """Fail early when the official schema no longer matches the pipeline."""
-
     for filename, required in EXPECTED_COLUMNS.items():
         path = source_dir / filename
         if not path.exists():
@@ -131,8 +121,6 @@ def validate_source_schema(source_dir: Path) -> None:
 
 
 def build_city_map(cities: pd.DataFrame) -> pd.DataFrame:
-    """Resolve candidate groups from canonical names in the source dimension."""
-
     records: list[dict[str, object]] = []
     for display_city, source_names in CANDIDATE_CITY_GROUPS.items():
         matches = cities.loc[cities["name"].isin(source_names)]
@@ -152,8 +140,6 @@ def build_city_map(cities: pd.DataFrame) -> pd.DataFrame:
 
 
 def materialize_candidate_trips(source_dir: Path, force: bool = False) -> Path:
-    """Scan the full trips CSV once and save only candidate city rows."""
-
     ensure_directories()
     output = INTERIM_DIR / "candidate_trips.parquet"
     if output.exists() and not force:
@@ -184,8 +170,6 @@ def materialize_candidate_trips(source_dir: Path, force: bool = False) -> Path:
 
 
 def profile_candidates(source_dir: Path, candidate_path: Path) -> pd.DataFrame:
-    """Profile volume, coverage, key-field quality, stations, and bike types."""
-
     cities = pd.read_csv(source_dir / "cities.csv")
     stations = pd.read_csv(source_dir / "stations.csv", low_memory=False)
     bikes = pd.read_csv(source_dir / "bikes.csv")
@@ -266,8 +250,6 @@ def profile_candidates(source_dir: Path, candidate_path: Path) -> pd.DataFrame:
 
 
 def select_cities(profile: pd.DataFrame) -> pd.DataFrame:
-    """Retain preferred cities unless their data fails explicit minimums."""
-
     indexed = profile.set_index("city")
 
     def eligible(city: str) -> bool:
@@ -315,8 +297,6 @@ def prepare_selected_trips(
     candidate_path: Path,
     selected: pd.DataFrame,
 ) -> tuple[Path, pd.DataFrame]:
-    """Deduplicate, join dimensions, localize time, and apply quality flags."""
-
     ensure_directories()
     output = INTERIM_DIR / "trips_selected.parquet"
     cities = pd.read_csv(source_dir / "cities.csv")
@@ -448,8 +428,6 @@ def prepare_selected_trips(
 def save_preparation_outputs(
     profile: pd.DataFrame, selected: pd.DataFrame, quality: pd.DataFrame
 ) -> None:
-    """Persist compact evidence used by the analysis and documentation."""
-
     ensure_directories()
     profile.to_parquet(PROCESSED_DIR / "city_profile.parquet", index=False)
     selected.to_parquet(PROCESSED_DIR / "selected_cities.parquet", index=False)

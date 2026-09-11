@@ -1,5 +1,3 @@
-"""Reusable static chart functions for the report and README."""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -30,8 +28,6 @@ def _save(fig: plt.Figure, output_dir: Path, name: str) -> Path:
 
 
 def create_all_figures(results: dict[str, pd.DataFrame], output_dir: Path) -> list[Path]:
-    """Create eight compact, interview-friendly static figures."""
-
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10})
     paths: list[Path] = []
     kpis = results["city_kpis"].sort_values("trips_per_active_day")
