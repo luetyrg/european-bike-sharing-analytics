@@ -1,0 +1,90 @@
+{
+  "checks": [
+    {
+      "city": "Bilbao",
+      "start": "2022-08-26",
+      "end": "2023-07-15",
+      "trips": 1438586.0,
+      "active_stations": 44,
+      "status": "passed"
+    },
+    {
+      "city": "Bilbao",
+      "start": "2023-06-01",
+      "end": "2023-06-07",
+      "trips": 42461.0,
+      "active_stations": 43,
+      "status": "passed"
+    },
+    {
+      "city": "Berlin",
+      "start": "2022-08-26",
+      "end": "2023-07-15",
+      "trips": 1213498.0,
+      "active_stations": 2777,
+      "status": "passed"
+    },
+    {
+      "city": "Berlin",
+      "start": "2023-06-01",
+      "end": "2023-06-07",
+      "trips": 50885.0,
+      "active_stations": 2429,
+      "status": "passed"
+    },
+    {
+      "city": "Dresden",
+      "start": "2022-08-26",
+      "end": "2023-07-15",
+      "trips": 1403079.0,
+      "active_stations": 208,
+      "status": "passed"
+    },
+    {
+      "city": "Dresden",
+      "start": "2023-06-01",
+      "end": "2023-06-07",
+      "trips": 45217.0,
+      "active_stations": 176,
+      "status": "passed"
+    },
+    {
+      "city": "Warszawa",
+      "start": "2022-08-26",
+      "end": "2023-07-15",
+      "trips": 2784538.0,
+      "active_stations": 389,
+      "status": "passed"
+    },
+    {
+      "city": "Warszawa",
+      "start": "2023-06-01",
+      "end": "2023-06-07",
+      "trips": 154614.0,
+      "active_stations": 314,
+      "status": "passed"
+    }
+  ],
+  "no_data_range": "passed",
+  "shared_parameter_mappings": "passed",
+  "dashboard_widgets": 16,
+  "original_project_tests": "11 passed",
+  "method": "Live Redash API -> read-only PostgreSQL; reconciled to original cleaned trip-level Parquet",
+  "browser_checks": {
+    "single_city_dropdown": "Bilbao -> Dresden; rendered 1 403 079 trips",
+    "date_range_url": "Dresden 2023-06-01..2023-06-07; rendered 45 217 trips and 176 active stations",
+    "desktop_layout": "1440x1000: KPI values, daily/hourly charts, heatmap, horizontal station charts, tables and notes visually reviewed",
+    "screenshots": [
+      "../docs/screenshots/redash-overview.jpg",
+      "../docs/screenshots/redash-demand-stations.jpg",
+      "../docs/screenshots/redash-station-balance.jpg"
+    ]
+  },
+  "verified_on": "2026-11-05",
+  "publication_checks": {
+    "test_suite": "14 passed",
+    "bundled_parquet_to_csv": "passed",
+    "compose_config": "passed",
+    "staged_secret_and_local_link_review": "passed"
+  }
+}

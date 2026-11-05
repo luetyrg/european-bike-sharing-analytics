@@ -1,0 +1,68 @@
+{
+  "source_file": "trips_selected.parquet",
+  "source_sha256": "7288fc90534934b3a447fce54a17ae8be99d7f70f3cb3fb1906866c3ab6a9656",
+  "marts": {
+    "demand_hourly": 26520,
+    "station_daily": 425381,
+    "city_coverage": 4
+  },
+  "total_trips": 6839701,
+  "cities": [
+    {
+      "city": "Berlin",
+      "first_date": "2022-08-26 00:00:00",
+      "last_date": "2023-07-15 00:00:00",
+      "active_days": 312,
+      "trips": 1213498,
+      "valid_duration_trips": 1212273,
+      "mean_duration_min": 21.580539050747355,
+      "median_duration_min": 15.0,
+      "known_starts": 867565,
+      "known_ends": 782464,
+      "station_pair_trips": 587995
+    },
+    {
+      "city": "Bilbao",
+      "first_date": "2022-08-29 00:00:00",
+      "last_date": "2023-07-15 00:00:00",
+      "active_days": 309,
+      "trips": 1438586,
+      "valid_duration_trips": 1437932,
+      "mean_duration_min": 16.68313778630236,
+      "median_duration_min": 12.0,
+      "known_starts": 1438542,
+      "known_ends": 1438488,
+      "station_pair_trips": 1438446
+    },
+    {
+      "city": "Dresden",
+      "first_date": "2022-08-26 00:00:00",
+      "last_date": "2023-07-15 00:00:00",
+      "active_days": 312,
+      "trips": 1403079,
+      "valid_duration_trips": 1402691,
+      "mean_duration_min": 12.599972077480585,
+      "median_duration_min": 9.0,
+      "known_starts": 375353,
+      "known_ends": 353137,
+      "station_pair_trips": 101812
+    },
+    {
+      "city": "Warszawa",
+      "first_date": "2022-08-26 00:00:00",
+      "last_date": "2023-07-15 00:00:00",
+      "active_days": 238,
+      "trips": 2784538,
+      "valid_duration_trips": 2781796,
+      "mean_duration_min": 23.601249055166683,
+      "median_duration_min": 15.0,
+      "known_starts": 2680133,
+      "known_ends": 2652132,
+      "station_pair_trips": 2564238
+    }
+  ],
+  "validation": {
+    "trip_counts_reconciled": true,
+    "station_events_reconciled": true
+  }
+}

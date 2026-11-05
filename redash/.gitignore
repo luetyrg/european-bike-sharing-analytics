@@ -1,0 +1,7 @@
+.env
+private/
+__pycache__/
+data/*.csv
+data/*.tmp
+dashboard_manifest.json
+*.log

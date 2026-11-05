@@ -1,0 +1,49 @@
+name: bike-redash
+x-redash: &redash
+  image: redash/redash:26.9.0
+  env_file: .env
+  restart: unless-stopped
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+services:
+  postgres:
+    image: postgres:17-alpine
+    env_file: .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./data:/import:ro
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U redash -d redash']
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  server:
+    <<: *redash
+    command: server
+    ports: ['127.0.0.1:5001:5000']
+    environment:
+      REDASH_WEB_WORKERS: 2
+    volumes:
+      - ./private:/private
+      - ./scripts:/bootstrap:ro
+  worker:
+    <<: *redash
+    command: worker
+    environment:
+      QUEUES: queries,scheduled_queries,schemas,periodic,emails,default
+      WORKERS_COUNT: 2
+  scheduler:
+    <<: *redash
+    command: scheduler
+volumes:
+  postgres-data:

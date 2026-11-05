@@ -7,8 +7,22 @@ and observed fleet utilization in Berlin, Warszawa, Dresden, and Bilbao.
 
 The project turns a large relational CSV export into a compact analytical
 workflow built around DuckDB SQL, Python, Parquet, a completed Jupyter report,
-and a local Streamlit dashboard. It is designed to answer practical comparison
+a local Streamlit dashboard, and a Redash BI dashboard backed by PostgreSQL. It is designed to answer practical comparison
 questions without attributing observed patterns to causes outside the dataset.
+
+## Redash BI dashboard
+
+A date-filterable dashboard for historical bike-sharing demand and station activity:
+six KPI cards, daily/hourly demand, a weekday × hour heatmap, station rankings,
+and a trip-cohort station balance. All panels share city and date filters.
+
+![Redash dashboard: demand overview and KPI cards](docs/screenshots/redash-overview.jpg)
+
+**[View the screenshot gallery, SQL, and local setup guide →](redash/README.md)**
+
+The screenshots are public and require no login. The interactive Redash instance
+runs locally; `localhost` is not a hosted demo. Compact Parquet marts are included,
+so the BI dashboard can be reproduced without downloading the full source archive.
 
 ## Business question
 
@@ -93,7 +107,7 @@ activity among bikes seen in trips, not verified fleet capacity.
 
 ![Observed fleet utilization proxy](reports/figures/fleet_utilization_proxy.png)
 
-## Dashboard
+## Streamlit dashboard
 
 The Streamlit dashboard reads only committed processed aggregates. It provides
 a city selector, weekday/weekend filter, six KPI cards, hourly and day-of-week
@@ -111,7 +125,9 @@ streamlit run dashboard/app.py
 - Parquet and PyArrow for reusable analytical storage
 - Jupyter and Plotly for the executed analytical report
 - Matplotlib for committed static figures
-- Streamlit for the local dashboard
+- Redash and PostgreSQL for parameterized BI reporting and historical station analysis
+- Docker Compose for a reproducible, isolated Redash environment
+- Streamlit for the local research dashboard
 - pytest and Git for validation and version history
 
 ## Project structure
@@ -125,6 +141,8 @@ streamlit run dashboard/app.py
 ├── notebooks/
 │   └── european_bike_sharing_analysis.ipynb
 ├── reports/figures/           # eight committed PNG figures
+├── docs/screenshots/          # native Redash portfolio screenshots
+├── redash/                    # Compose, PostgreSQL SQL, compact marts, validation
 ├── scripts/
 │   ├── prepare_data.py
 │   └── run_analysis.py
